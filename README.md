@@ -2,11 +2,19 @@
 
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 
-Express.js middleware to detect the UI language that a User Agent prefers analyzing the Accept-Language HTTP header.
+Express.js middleware to detect UI language to be used to serve content.
 
-As soon as you support a website that serves multilingual UI, you often may want to send a first-time visitor the content in the language most appropriate to them. Later on, you will have a chance to ask the user what language they prefer and store this information with the user account data, or send a special cookie to the user agent. But the first time you meet your user, all what you have is the `Accept-Language` header in their HTTP request.
+As soon as you support a website that serves multilingual UI, you want to send the user your content in the language the user prefer. If this is a first-time visitor, you may want to try to guess the most appropriate language from the `Accept-Language` header. Later on, you will have a chance to ask the user what language they prefer and store this information with the user account data, or send a special cookie to the user agent.
 
-This middleware analyzes the `Accept-Language` header and stores the most preferable language's code in `req.uilang`. __All language codes are in lowercase.__
+This middleware extends the Request object with `req.uilang` property following these steps:
+
+* First, check if the special cookie has come with the request. If so, ok - use it.
+
+* If no cookie detected, analyze the `Accept-Language` header and choose the most preferable language.
+
+* If nothing helps, use the provided default value.
+
+__All language codes are lowercased__ (e.g., `en`, `en-us` etc).
 
 ## Installation
 
@@ -22,7 +30,8 @@ const uiLangDetector = require('ui-lang-detector');
 
 // Set up options
 const options = {
-  defaultLang: "en"
+  cookieName: 'lang',
+  defaultLang: 'en'
 };
 
 // Mount the middleware
@@ -41,8 +50,14 @@ app.get('/some_path', function (req, res) {
 
 Type: `Object`
 
+#### options.cookieName
+
+Type: `String`
+
+Optional. The cookie name being used to store UI language. If omitted, cookies are not processed.
+
 #### options.defaultLang
 
 Type: `String`
 
-Default language code to use if no information is available in a request.
+Default language code to use.

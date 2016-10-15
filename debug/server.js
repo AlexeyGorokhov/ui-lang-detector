@@ -3,15 +3,18 @@
 const http = require('http');
 const express = require('express');
 const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 const uiLangDetector = require('../index.js');
 
 const options = {
+  cookieName: 'lang',
   defaultLang: 'en-us'
 };
 
 const app = express();
 
 app.use(logger('dev'));
+app.use(cookieParser());
 app.use(uiLangDetector(options));
 app.set('port', 7000);
 

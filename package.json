@@ -1,10 +1,11 @@
 {
   "name": "ui-lang-detector",
-  "version": "1.0.0",
-  "description": "Express.js middleware to detect the UI language that a User Agent prefers analyzing the Accept-Language HTTP header",
+  "version": "2.0.0",
+  "description": "Express.js middleware to detect UI language to be used to serve content",
   "main": "index.js",
   "scripts": {
-    "test": "semistandard && node_modules/.bin/tape tests/*.js | tap-spec"
+    "test": "semistandard && node_modules/.bin/tape 'test/*.js' | tap-spec",
+    "test:dev": "node_modules/.bin/tape 'test/*.js' | tap-spec"
   },
   "author": {
     "name": "Alexey Gorokhov",
@@ -13,6 +14,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
     "morgan": "^1.7.0",
     "proxyquire": "^1.7.4",
@@ -22,6 +24,7 @@
     "tape": "^4.5.1"
   },
   "keywords": [
+    "UI language",
     "Accept-Language",
     "Express middleware"
   ],
